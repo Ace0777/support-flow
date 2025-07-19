@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: 'user-service-api'
+
+  data:
+    mongodb:
+      uri: 'mongodb+srv://queue-notify-user:queue-notify-user@clusterqueuenotify.yl4htzx.mongodb.net/QueueNotifydb?retryWrites=true&w=majority&appName=ClusterQueueNotify'
+      auto-index-creation: true
