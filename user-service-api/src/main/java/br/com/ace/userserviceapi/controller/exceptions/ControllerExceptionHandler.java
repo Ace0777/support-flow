@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import models.excpetions.ResourceNotFoundException;
 import models.excpetions.StandardError;
 import models.excpetions.ValidationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.ArrayList;
 
 import static java.time.LocalDateTime.now;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -52,5 +53,17 @@ public class ControllerExceptionHandler {
         return ResponseEntity.badRequest().body(error);
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    ResponseEntity<StandardError> handleDataIntegrityViolationException(final DataIntegrityViolationException ex, final HttpServletRequest request) {
+        return ResponseEntity.status(CONFLICT).body(
+                StandardError.builder()
+                        .timestamp(now())
+                        .status(CONFLICT.value())
+                        .error(CONFLICT.getReasonPhrase())
+                        .message(ex.getMessage())
+                        .path(request.getRequestURI())
+                        .build()
+        );
+    }
 
 }

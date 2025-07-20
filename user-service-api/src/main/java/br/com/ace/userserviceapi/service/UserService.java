@@ -7,6 +7,7 @@ import models.excpetions.ResourceNotFoundException;
 import models.requests.CreateUserRequest;
 import models.responses.UserResponse;
 import org.mapstruct.Mapping;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,6 +28,16 @@ public class UserService {
 
     @Mapping(target = "id", ignore = true)
     public void save(CreateUserRequest createUserRequest) {
+        verifyEmailAlreadyExists(createUserRequest.email(), null);
         userRepository.save(userMapper.fromRequest(createUserRequest));
+    }
+
+    private void verifyEmailAlreadyExists(final String email, final String id) {
+      userRepository.findByEmail(email)
+              .filter(user -> !user.getId().equals(id))  //se ele indentificar um usuario com o mesmo email, mas com id diferente, lança a exceção
+              .ifPresent(user -> {
+                  throw new DataIntegrityViolationException("Email already exists: " + email);
+              });
+
     }
 }
