@@ -5,10 +5,15 @@ package br.com.ace.userserviceapi.controller.exceptions;
 import jakarta.servlet.http.HttpServletRequest;
 import models.excpetions.ResourceNotFoundException;
 import models.excpetions.StandardError;
+import models.excpetions.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.ArrayList;
 
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -28,4 +33,24 @@ public class ControllerExceptionHandler {
                         .build()
         );
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    ResponseEntity<ValidationException> handleMethodArgumentNotValidException(final MethodArgumentNotValidException ex, final HttpServletRequest request) {
+        var error = ValidationException.builder()
+                .timestamp(now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error("Validation exception")
+                .message("Exception in validation attributes")
+                .path(request.getRequestURI())
+                .errors(new ArrayList<>())
+                .build();
+
+        for(FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
+            error.addError(fieldError.getField(), fieldError.getDefaultMessage());
+        }
+
+        return ResponseEntity.badRequest().body(error);
+    }
+
+
 }
