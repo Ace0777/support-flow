@@ -1,17 +1,17 @@
 package br.com.ace.userserviceapi.service;
 
+import br.com.ace.userserviceapi.entity.User;
 import br.com.ace.userserviceapi.mapper.UserMapper;
 import br.com.ace.userserviceapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import models.excpetions.ResourceNotFoundException;
 import models.requests.CreateUserRequest;
+import models.requests.UpdateUserRequest;
 import models.responses.UserResponse;
 import org.mapstruct.Mapping;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,12 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserResponse findById(final String id) {
-        return userMapper.fromEntity(
-                userRepository.findById(id)
-                                .orElseThrow(() ->new ResourceNotFoundException(
-                                        "Object not found: " + id + ", Type: " + UserResponse.class.getName()
-                                ))
-        );
+        return userMapper.fromEntity(find(id));
     }
 
     @Mapping(target = "id", ignore = true)
@@ -48,5 +43,18 @@ public class UserService {
         return userRepository.findAll()
                 .stream().map(userMapper::fromEntity)
                 .toList();
+    }
+
+    public UserResponse update(final String id,final UpdateUserRequest updateUserRequest) {
+        User entity = find(id);
+        verifyEmailAlreadyExists(updateUserRequest.email(), id);
+        return userMapper.fromEntity(userRepository.save(userMapper.update(updateUserRequest, entity)));
+    }
+
+    private User find(final String id){
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Object not found: " + id + ", Type: " + User.class.getName()
+                ));
     }
 }
