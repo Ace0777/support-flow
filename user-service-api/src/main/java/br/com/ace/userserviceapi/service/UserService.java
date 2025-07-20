@@ -10,6 +10,9 @@ import org.mapstruct.Mapping;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -39,5 +42,11 @@ public class UserService {
                   throw new DataIntegrityViolationException("Email already exists: " + email);
               });
 
+    }
+
+    public List<UserResponse> findAll() {
+        return userRepository.findAll()
+                .stream().map(userMapper::fromEntity)
+                .toList();
     }
 }

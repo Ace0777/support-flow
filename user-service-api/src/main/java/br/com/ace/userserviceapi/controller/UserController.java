@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RequestMapping("/api/users")
@@ -18,6 +19,9 @@ public interface UserController {
 
     @PostMapping
     ResponseEntity<Void> save(@Valid @RequestBody final CreateUserRequest createUserRequest);
+
+    @GetMapping
+    ResponseEntity<List<UserResponse>> findAll();
 
 
 
