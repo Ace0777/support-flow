@@ -1,8 +1,7 @@
 spring:
   application:
     name: 'user-service-api'
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER_URI}
 
-  data:
-    mongodb:
-      uri: 'mongodb+srv://queue-notify-user:queue-notify-user@clusterqueuenotify.yl4htzx.mongodb.net/QueueNotifydb?retryWrites=true&w=majority&appName=ClusterQueueNotify'
-      auto-index-creation: true
