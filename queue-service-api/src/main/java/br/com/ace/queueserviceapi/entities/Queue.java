@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
+import static models.enums.QueueStatusEnum.ACTIVE;
 
 @Data
 @Builder
@@ -30,9 +31,6 @@ public class Queue implements Serializable {
     @Column(nullable = false, length = 45)
     private String requesterId;
 
-    @Column(nullable = false, length = 45)
-    private String customerId;
-
     @Column(nullable = false, length = 50)
     private String title;
 
@@ -41,7 +39,7 @@ public class Queue implements Serializable {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private QueueStatusEnum status = QueueStatusEnum.ACTIVE;
+    private QueueStatusEnum status = ACTIVE;
 
     private LocalDateTime createdAt = now();
     private LocalDateTime closedAt;
