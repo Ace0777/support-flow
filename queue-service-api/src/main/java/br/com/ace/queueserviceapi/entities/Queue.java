@@ -41,6 +41,6 @@ public class Queue implements Serializable {
     @Enumerated(EnumType.STRING)
     private QueueStatusEnum status = ACTIVE;
 
-    private LocalDateTime createdAt = now();
+    private LocalDateTime createdAt;
     private LocalDateTime closedAt;
 }

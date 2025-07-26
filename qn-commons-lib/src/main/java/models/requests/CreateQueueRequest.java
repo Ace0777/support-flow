@@ -14,5 +14,6 @@ public record CreateQueueRequest(
         @NotBlank(message = "Status cannot be empty")
         String status
 
+
 ) {
 }

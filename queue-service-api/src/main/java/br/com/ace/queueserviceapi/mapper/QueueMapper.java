@@ -7,6 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import java.time.LocalDateTime;
+
 import static org.mapstruct.NullValueCheckStrategy.ALWAYS;
 import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 
@@ -19,10 +21,16 @@ public interface QueueMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", source = "status", qualifiedByName = "mapStatus") //target de status é o que é passado no request e faço isso usando o mapStatus
+    @Mapping(target = "createdAt", expression = "java(mapCreatedAt())")
     Queue fromRequest(CreateQueueRequest request);
 
     @Named("mapStatus")
     default QueueStatusEnum mapStatus( final String status){
         return QueueStatusEnum.toEnum(status);
+    }
+
+    @Named("mapCreatedAt")
+    default LocalDateTime mapCreatedAt() {
+        return LocalDateTime.now();
     }
 }
