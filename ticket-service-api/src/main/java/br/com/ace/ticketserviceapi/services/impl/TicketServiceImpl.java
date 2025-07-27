@@ -10,6 +10,9 @@ import models.requests.CreateTicketRequest;
 import models.requests.UpdateTicketRequest;
 import models.responses.TicketResponse;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 import static java.time.LocalDateTime.now;
 
 
@@ -41,6 +44,11 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public void deleteById(final Long id) {
         repository.delete(findById(id));
+    }
+
+    @Override
+    public List<Ticket> findAll() {
+        return repository.findAll();
     }
 
 

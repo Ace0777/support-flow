@@ -5,6 +5,8 @@ import models.requests.CreateTicketRequest;
 import models.requests.UpdateTicketRequest;
 import models.responses.TicketResponse;
 
+import java.util.List;
+
 public interface TicketService {
 
     Ticket findById(final long id);
@@ -14,6 +16,8 @@ public interface TicketService {
     TicketResponse update(UpdateTicketRequest request, Long id);
 
     void deleteById(final Long id);
+
+    List<Ticket> findAll();
 
 
 }

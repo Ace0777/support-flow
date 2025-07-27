@@ -11,6 +11,8 @@ import models.responses.TicketResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -43,5 +45,12 @@ public class TicketControllerImpl implements TicketController {
     public ResponseEntity<Void> deleteById(final long id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<List<TicketResponse>> findAll() {
+        return ResponseEntity.ok().body(
+              mapper.fromEntities(service.findAll())
+        );
     }
 }

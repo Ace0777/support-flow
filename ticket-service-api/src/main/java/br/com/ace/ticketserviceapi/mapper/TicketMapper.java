@@ -11,6 +11,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.mapstruct.NullValueCheckStrategy.ALWAYS;
 import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
@@ -43,4 +44,6 @@ public interface TicketMapper {
     default LocalDateTime mapCreatedAt() {
         return LocalDateTime.now();
     }
+
+    List<TicketResponse> fromEntities(List<Ticket> tickets);
 }

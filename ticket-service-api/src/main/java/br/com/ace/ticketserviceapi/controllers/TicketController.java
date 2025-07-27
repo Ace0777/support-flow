@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @RequestMapping("/api/tickets")
 public interface TicketController {
@@ -33,6 +34,9 @@ public interface TicketController {
             @NotNull(message = "Ticket ID cannot be null")
             @Parameter(description = "Ticket ID", required = true)
             @PathVariable(name = "id") final long id);
+
+    @GetMapping
+    ResponseEntity <List<TicketResponse>> findAll();
 
 
 }
