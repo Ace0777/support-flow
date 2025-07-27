@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import models.requests.CreateTicketRequest;
 import models.requests.UpdateTicketRequest;
 import models.responses.TicketResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,6 +52,13 @@ public class TicketControllerImpl implements TicketController {
     public ResponseEntity<List<TicketResponse>> findAll() {
         return ResponseEntity.ok().body(
               mapper.fromEntities(service.findAll())
+        );
+    }
+
+    @Override
+    public ResponseEntity<Page<TicketResponse>> findAllPaginated(Integer page, String direction, Integer linesPerPage, String orderBy) {
+        return ResponseEntity.ok().body(
+                service.findAllPaginated(page, direction, linesPerPage, orderBy).map(mapper::fromEntity)
         );
     }
 }

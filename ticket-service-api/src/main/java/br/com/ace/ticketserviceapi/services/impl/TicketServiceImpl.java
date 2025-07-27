@@ -9,6 +9,9 @@ import models.excpetions.ResourceNotFoundException;
 import models.requests.CreateTicketRequest;
 import models.requests.UpdateTicketRequest;
 import models.responses.TicketResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,6 +52,17 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<Ticket> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public Page<Ticket> findAllPaginated(Integer page, String direction, Integer linesPerPage, String orderBy) {
+        PageRequest pageRequest = PageRequest.of(
+                page,
+                linesPerPage,
+                Sort.Direction.valueOf(direction),
+                orderBy
+        );
+        return repository.findAll(pageRequest);
     }
 
 

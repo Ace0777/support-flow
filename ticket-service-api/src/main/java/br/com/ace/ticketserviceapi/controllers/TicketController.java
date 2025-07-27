@@ -6,6 +6,7 @@ import lombok.Getter;
 import models.requests.UpdateTicketRequest;
 import models.requests.CreateTicketRequest;
 import models.responses.TicketResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,5 +39,15 @@ public interface TicketController {
     @GetMapping
     ResponseEntity <List<TicketResponse>> findAll();
 
+    @GetMapping("/page")
+    ResponseEntity<Page<TicketResponse>> findAllPaginated(
+            @RequestParam(value = "page", defaultValue = "0") final Integer page,
+
+            @RequestParam(value = "direction", defaultValue = "ASC", required = true) final String direction,
+
+            @RequestParam(value = "linesPerPage", defaultValue = "12") final Integer linesPerPage,
+
+            @RequestParam(value = "orderBy", defaultValue = "id") final String orderBy
+    );
 
 }
