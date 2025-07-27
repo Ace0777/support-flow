@@ -13,5 +13,7 @@ public interface TicketService {
 
     TicketResponse update(UpdateTicketRequest request, Long id);
 
+    void deleteById(final Long id);
+
 
 }

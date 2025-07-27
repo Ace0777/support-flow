@@ -38,9 +38,13 @@ public class TicketServiceImpl implements TicketService {
         return mapper.fromEntity(repository.save(entity));
     }
 
+    @Override
+    public void deleteById(final Long id) {
+        repository.delete(findById(id));
+    }
 
 
-      public Ticket findById(final long id){
+    public Ticket findById(final long id){
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Object not found: " + id + ", Type: " + Ticket.class.getName()

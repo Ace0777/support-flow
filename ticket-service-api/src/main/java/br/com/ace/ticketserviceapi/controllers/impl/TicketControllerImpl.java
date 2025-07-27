@@ -38,4 +38,10 @@ public class TicketControllerImpl implements TicketController {
                 mapper.fromEntity(service.findById(id))
         );
     }
+
+    @Override
+    public ResponseEntity<Void> deleteById(final long id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

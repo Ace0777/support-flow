@@ -28,6 +28,11 @@ public interface TicketController {
             @Parameter(description = "Ticket ID", required = true)
             @PathVariable(name = "id") final long id);
 
+    @DeleteMapping("/{id}")
+    ResponseEntity <Void> deleteById(
+            @NotNull(message = "Ticket ID cannot be null")
+            @Parameter(description = "Ticket ID", required = true)
+            @PathVariable(name = "id") final long id);
 
 
 }
