@@ -1,6 +1,6 @@
 package models.responses;
 
-public record QueueResponse(
+public record TicketResponse(
         String id,
         String requesterId,
         String title,

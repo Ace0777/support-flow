@@ -1,25 +1,23 @@
-package br.com.ace.queueserviceapi.entities;
+package br.com.ace.ticketserviceapi.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import models.enums.QueueStatusEnum;
-
+import models.enums.TicketStatusEnum;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import static models.enums.TicketStatusEnum.OPEN;
 
-import static java.time.LocalDateTime.now;
-import static models.enums.QueueStatusEnum.ACTIVE;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "tb_queue")
-public class Queue implements Serializable {
+@Entity(name = "tb_ticket")
+public class Ticket implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -31,6 +29,9 @@ public class Queue implements Serializable {
     @Column(nullable = false, length = 45)
     private String requesterId;
 
+    @Column(nullable = false, length = 45)
+    private String customerId;
+
     @Column(nullable = false, length = 50)
     private String title;
 
@@ -39,7 +40,7 @@ public class Queue implements Serializable {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private QueueStatusEnum status = ACTIVE;
+    private TicketStatusEnum status = OPEN;
 
     private LocalDateTime createdAt;
     private LocalDateTime closedAt;

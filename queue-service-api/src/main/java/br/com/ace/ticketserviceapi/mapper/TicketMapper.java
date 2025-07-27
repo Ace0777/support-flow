@@ -1,8 +1,8 @@
-package br.com.ace.queueserviceapi.mapper;
+package br.com.ace.ticketserviceapi.mapper;
 
-import br.com.ace.queueserviceapi.entities.Queue;
-import models.enums.QueueStatusEnum;
-import models.requests.CreateQueueRequest;
+import br.com.ace.ticketserviceapi.entities.Ticket;
+import models.enums.TicketStatusEnum;
+import models.requests.CreateTicketRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -17,16 +17,16 @@ import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
         nullValuePropertyMappingStrategy =  IGNORE,
         nullValueCheckStrategy = ALWAYS
 )
-public interface QueueMapper {
+public interface TicketMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", source = "status", qualifiedByName = "mapStatus") //target de status é o que é passado no request e faço isso usando o mapStatus
     @Mapping(target = "createdAt", expression = "java(mapCreatedAt())")
-    Queue fromRequest(CreateQueueRequest request);
+    Ticket fromRequest(CreateTicketRequest request);
 
     @Named("mapStatus")
-    default QueueStatusEnum mapStatus( final String status){
-        return QueueStatusEnum.toEnum(status);
+    default TicketStatusEnum mapStatus(final String status){
+        return TicketStatusEnum.toEnum(status);
     }
 
     @Named("mapCreatedAt")
