@@ -10,12 +10,8 @@ import models.requests.CreateTicketRequest;
 import models.requests.UpdateTicketRequest;
 import models.responses.TicketResponse;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-
 import static java.time.LocalDateTime.now;
-import static models.enums.TicketStatusEnum.OPEN;
-import static models.enums.TicketStatusEnum.RESOLVED;
+
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +35,6 @@ public class TicketServiceImpl implements TicketService {
             case RESOLVED -> entity.setClosedAt(now());
             case ASSIGNED -> entity.setClosedAt(null);
         }
-
         return mapper.fromEntity(repository.save(entity));
     }
 

@@ -2,6 +2,7 @@ package br.com.ace.ticketserviceapi.controllers.impl;
 
 
 import br.com.ace.ticketserviceapi.controllers.TicketController;
+import br.com.ace.ticketserviceapi.mapper.TicketMapper;
 import br.com.ace.ticketserviceapi.services.TicketService;
 import lombok.RequiredArgsConstructor;
 import models.requests.CreateTicketRequest;
@@ -17,6 +18,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class TicketControllerImpl implements TicketController {
 
     private final TicketService service;
+    private final TicketMapper mapper;
 
     @Override
     public ResponseEntity<Void> save(CreateTicketRequest request) {
@@ -28,5 +30,12 @@ public class TicketControllerImpl implements TicketController {
     public ResponseEntity<TicketResponse> update(final Long id, UpdateTicketRequest request) {
 
         return ResponseEntity.ok().body(service.update(request, id));
+    }
+
+    @Override
+    public ResponseEntity<TicketResponse> findById(long id) {
+        return ResponseEntity.ok().body(
+                mapper.fromEntity(service.findById(id))
+        );
     }
 }

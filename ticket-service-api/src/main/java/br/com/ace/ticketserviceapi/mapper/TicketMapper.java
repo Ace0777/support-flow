@@ -27,7 +27,6 @@ public interface TicketMapper {
     @Mapping(target = "createdAt", expression = "java(mapCreatedAt())")
     Ticket fromRequest(CreateTicketRequest request);
 
-
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", source = "status", qualifiedByName = "mapStatus")
     @Mapping(target = "createdAt", ignore = true)
