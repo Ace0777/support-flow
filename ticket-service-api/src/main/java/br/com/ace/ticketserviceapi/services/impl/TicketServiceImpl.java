@@ -12,6 +12,7 @@ import models.excpetions.ResourceNotFoundException;
 import models.requests.CreateTicketRequest;
 import models.requests.UpdateTicketRequest;
 import models.responses.TicketResponse;
+import models.responses.UserResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -36,9 +37,14 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void save(CreateTicketRequest request) {
-        validateUserId(request.requesterId());
+        final var customer = validateUserId(request.customerId());
+        final var requester = validateUserId(request.requesterId());
+
+        log.info("Customer: {}", customer);
+        log.info("Requester: {}", requester);
+
+
         repository.save(mapper.fromRequest(request));
-        log.info("Ticket saved successfully for requesterId: {}", request.requesterId());
     }
 
     @Override
@@ -83,8 +89,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
 
-    void validateUserId(final String userId){
-        final var response = userServiceFeignClient.findById(userId).getBody();
-        log.info("User found: {}", response);
+    UserResponse validateUserId(final String userId){
+        return userServiceFeignClient.findById(userId).getBody();
     }
 }
