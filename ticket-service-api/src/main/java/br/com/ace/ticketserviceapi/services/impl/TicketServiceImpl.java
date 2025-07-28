@@ -1,10 +1,13 @@
 package br.com.ace.ticketserviceapi.services.impl;
 
+import br.com.ace.ticketserviceapi.clients.UserServiceFeignClient;
 import br.com.ace.ticketserviceapi.entities.Ticket;
 import br.com.ace.ticketserviceapi.mapper.TicketMapper;
 import br.com.ace.ticketserviceapi.repositories.TicketRepository;
 import br.com.ace.ticketserviceapi.services.TicketService;
+import ch.qos.logback.classic.Logger;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import models.excpetions.ResourceNotFoundException;
 import models.requests.CreateTicketRequest;
 import models.requests.UpdateTicketRequest;
@@ -21,15 +24,21 @@ import static java.time.LocalDateTime.now;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository repository;
     private final TicketMapper mapper;
+    private final UserServiceFeignClient userServiceFeignClient;
+
+
 
 
     @Override
     public void save(CreateTicketRequest request) {
+        validateUserId(request.requesterId());
         repository.save(mapper.fromRequest(request));
+        log.info("Ticket saved successfully for requesterId: {}", request.requesterId());
     }
 
     @Override
@@ -71,5 +80,11 @@ public class TicketServiceImpl implements TicketService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Object not found: " + id + ", Type: " + Ticket.class.getName()
                 ));
+    }
+
+
+    void validateUserId(final String userId){
+        final var response = userServiceFeignClient.findById(userId).getBody();
+        log.info("User found: {}", response);
     }
 }

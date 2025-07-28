@@ -21,8 +21,8 @@ dependencies {
     // Starter para configuração do Spring Cloud
     implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
 
-    implementation('org.springframework.cloud:spring-cloud-starter-openfeign')
 
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
     /* // Starter para integração com o Eureka Discovery Client
      implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'*/
