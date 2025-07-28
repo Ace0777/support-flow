@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: 'service-discovery'
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER_URI}
+eureka:
+    client:
+      registerWithEureka: false
+      fetchRegistry: false
+server:
+  port: ${SERVER_PORT:8761}
+
