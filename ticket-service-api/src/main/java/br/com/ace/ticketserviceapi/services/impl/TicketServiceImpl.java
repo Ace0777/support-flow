@@ -49,6 +49,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public TicketResponse update(UpdateTicketRequest request, Long id) {
+
+        validateUsers(request);
+
         Ticket entity = findById(id);
         entity = mapper.fromRequest(entity, request);
 
@@ -57,6 +60,11 @@ public class TicketServiceImpl implements TicketService {
             case ASSIGNED -> entity.setClosedAt(null);
         }
         return mapper.fromEntity(repository.save(entity));
+    }
+
+    private void validateUsers(UpdateTicketRequest request) {
+        if(request.requesterId() != null) validateUserId(request.requesterId());
+        if(request.customerId() != null) validateUserId(request.customerId());
     }
 
     @Override
