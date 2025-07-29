@@ -10,7 +10,7 @@ group = 'br.com.ace'
 version = '1.0.0'
 
 java {
-	sourceCompatibility = '20'
+	sourceCompatibility = '21'
 }
 
 repositories {
