@@ -57,7 +57,7 @@ public class TicketServiceImpl implements TicketService {
 
         switch (entity.getStatus()) {
             case RESOLVED -> entity.setClosedAt(now());
-            case ASSIGNED -> entity.setClosedAt(null);
+            case ASSIGNED, OPEN -> entity.setClosedAt(null);
         }
         return mapper.fromEntity(repository.save(entity));
     }

@@ -24,8 +24,8 @@ dependencies {
 
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
-    /* // Starter para integração com o Eureka Discovery Client
-     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'*/
+     // Starter para integração com o Eureka Discovery Client
+     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
     // Starter para validação de dados
     implementation 'org.springframework.boot:spring-boot-starter-validation'
