@@ -5,7 +5,6 @@ import br.com.ace.ticketserviceapi.entities.Ticket;
 import br.com.ace.ticketserviceapi.mapper.TicketMapper;
 import br.com.ace.ticketserviceapi.repositories.TicketRepository;
 import br.com.ace.ticketserviceapi.services.TicketService;
-import ch.qos.logback.classic.Logger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import models.dtos.TicketCreatedMessage;
