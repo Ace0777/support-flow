@@ -36,6 +36,11 @@ dependencies {
 
     // Starter para testes do Spring Boot
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+
+
 }
 
 dependencyManagement {

@@ -9,7 +9,6 @@ import java.util.List;
 @Configuration
 public class RabbitMQConfig {
 
-
     @Bean
     public SimpleMessageConverter messageConverter() {
         SimpleMessageConverter messageConverter = new SimpleMessageConverter();

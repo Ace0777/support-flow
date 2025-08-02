@@ -1,6 +1,21 @@
 spring:
   application:
     name: 'email-service'
-server:
-  port: 9090
 
+
+
+mail:
+  host: ${MAIL_HOST:smtp.gmail.com}
+  port: ${MAIL_PORT:587}
+  username: ${MAIL_USERNAME:luishhasantos@gmail.com}
+  password: ${MAIL_PASSWORD:eodr qwxw svut lrtr}
+  protocol: ${MAIL_PROTOCOL:smtp}
+text-created-ticket-confirmation: |
+    Hello %s, your ticket has been created successfully.
+    - Ticket ID: %s
+    - Title: %s
+    - Description: %s
+    - Created At: %s
+    - technician: %s
+    - Status: %s
+  
