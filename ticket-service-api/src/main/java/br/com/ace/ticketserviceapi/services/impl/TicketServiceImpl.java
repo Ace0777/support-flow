@@ -8,11 +8,13 @@ import br.com.ace.ticketserviceapi.services.TicketService;
 import ch.qos.logback.classic.Logger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import models.dtos.TicketCreatedMessage;
 import models.excpetions.ResourceNotFoundException;
 import models.requests.CreateTicketRequest;
 import models.requests.UpdateTicketRequest;
 import models.responses.TicketResponse;
 import models.responses.UserResponse;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -31,6 +33,7 @@ public class TicketServiceImpl implements TicketService {
     private final TicketRepository repository;
     private final TicketMapper mapper;
     private final UserServiceFeignClient userServiceFeignClient;
+    private final RabbitTemplate rabbitTemplate;
 
 
 
@@ -39,12 +42,18 @@ public class TicketServiceImpl implements TicketService {
     public void save(CreateTicketRequest request) {
         final var customer = validateUserId(request.customerId());
         final var requester = validateUserId(request.requesterId());
+        final var entity = repository.save(mapper.fromRequest(request));
 
-        log.info("Customer: {}", customer);
-        log.info("Requester: {}", requester);
+        log.info("Ticket created: {}", entity);
+
+        rabbitTemplate.convertAndSend(
+                "supportflow",
+                "rk.tickets.create",
+                new TicketCreatedMessage(mapper.fromEntity(entity), customer, requester)
+
+                );
 
 
-        repository.save(mapper.fromRequest(request));
     }
 
     @Override

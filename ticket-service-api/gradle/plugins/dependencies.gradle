@@ -19,6 +19,8 @@ dependencies {
     // Starter para desenvolvimento de aplicativos web com Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+
     // Starter para configuração do Spring Cloud Config
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
 
