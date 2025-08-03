@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="'SupportFlow // Ticket #' + ${ticketId}">SupportFlow // Ticket #12345</title>
+    <style>
+        body {
+          margin: 0;
+          padding: 0;
+          background-color: #000000;
+        }
+        table {
+          border-spacing: 0;
+        }
+        .wrapper {
+          width: 100%;
+          table-layout: fixed;
+          background-color: #000000;
+          padding: 20px 0;
+        }
+        .main {
+          background-color: #111111;
+          border: 1px solid #8b0000;
+          border-radius: 12px;
+          max-width: 600px;
+          margin: 0 auto;
+          box-shadow: 0 0 10px #8b0000;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          color: #ffffff;
+        }
+        .content {
+          padding: 2rem;
+        }
+        h1 {
+          color: #ff0000;
+          margin: 0 0 1rem 0;
+          text-align: center;
+        }
+        .label {
+          color: #888888;
+          font-weight: 600;
+        }
+        .value {
+          color: #ffffff;
+          font-weight: 400;
+        }
+        .center {
+          text-align: center;
+          margin-bottom: 1rem;
+          color: #dddddd;
+          font-weight: 600;
+        }
+        footer {
+          padding-top: 1.5rem;
+          border-top: 1px solid #8b0000;
+          text-align: center;
+          font-family: 'Courier New', Courier, monospace;
+          font-size: 1.2rem;
+          color: #ff0000;
+          letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+<body>
+<table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+    <tr>
+        <td align="center">
+            <table class="main" role="presentation">
+                <tr>
+                    <td class="content">
+                        <h1>Ticket Created</h1>
+
+                        <div class="center">
+                            Hello <span th:text="${username}">John Doe</span>, your ticket has been created successfully.
+                        </div>
+
+                        <div class="center"><span class="label">Ticket ID:</span> <span th:text="${ticketId}" class="value">#12345</span></div>
+                        <div class="center"><span class="label">Title:</span> <span th:text="${title}" class="value">System Crash</span></div>
+                        <div class="center"><span class="label">Description:</span> <span th:text="${description}" class="value">App is crashing when opening</span></div>
+                        <div class="center"><span class="label">Created At:</span> <span th:text="${createdAt}" class="value">2025-08-02 17:00</span></div>
+                        <div class="center"><span class="label">Technician:</span> <span th:text="${technician}" class="value">Alfred Pennyworth</span></div>
+                        <div class="center"><span class="label">Status:</span> <span th:text="${status}" class="value">Open</span></div>
+
+                        <footer>Support-Flow</footer>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
