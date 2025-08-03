@@ -11,4 +11,7 @@ mail:
   password: ${MAIL_PASSWORD:eodr qwxw svut lrtr}
   protocol: ${MAIL_PROTOCOL:smtp}
 
+server:
+  port: 0
+
   
