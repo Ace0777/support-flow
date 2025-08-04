@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: 'log-service'
+  datasource:
+    url: jdbc:mysql://localhost:3306/supportflowlogs?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: Rivennumero1@
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 20000
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+        jdbc:
+          time_zone: America/Sao_Paulo
+  rabbitmq:
+    host: ${RABBITMQ_HOST:Localhost}
+    hosts: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    connection-timeout: 1000
+

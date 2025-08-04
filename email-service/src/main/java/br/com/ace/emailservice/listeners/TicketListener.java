@@ -1,7 +1,6 @@
 package br.com.ace.emailservice.listeners;
 
 
-import br.com.ace.emailservice.models.enums.OperationEnum;
 import br.com.ace.emailservice.services.EmailService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;

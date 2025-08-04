@@ -7,6 +7,7 @@ import br.com.ace.ticketserviceapi.repositories.TicketRepository;
 import br.com.ace.ticketserviceapi.services.TicketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import models.dtos.LogEvent;
 import models.dtos.TicketCreatedMessage;
 import models.excpetions.ResourceNotFoundException;
 import models.requests.CreateTicketRequest;
@@ -19,7 +20,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import static java.time.LocalDateTime.now;
 
@@ -49,7 +52,6 @@ public class TicketServiceImpl implements TicketService {
                 "supportflow",
                 "rk.tickets.create",
                 new TicketCreatedMessage(mapper.fromEntity(entity), customer, requester)
-
                 );
 
 
