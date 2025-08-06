@@ -11,6 +11,33 @@ services:
     networks:
       - supportflow
 
+  service-discovery:
+    image: ace0777/supportflow-service-discovery
+    container_name: 'service-discovery'
+    environment:
+      - PORT=8761
+    ports:
+      - "8761:8761"
+    expose:
+      - 8761
+    networks:
+      - supportflow
+
+  api-gateway:
+    image: ace0777/supportflow-api-gateway
+    container_name: 'api-gateway'
+    environment:
+      - EUREKA_SERVER_URI=http://service-discovery:8761/eureka
+      - PORT=8765
+    ports:
+      - "8765:8765"
+    expose:
+      - 8765
+    depends_on:
+      - service-discovery
+    networks:
+      - supportflow
+
   config-server:
     image: ace0777/supportflow-config-server
     container_name: 'config-server'
@@ -19,29 +46,17 @@ services:
       - CONFIG_SERVER_USERNAME=ace0777
       - CONFIG_SERVER_PASSWORD=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
       - PORT=8888
+      - EUREKA_SERVER_URI=http://service-discovery:8761/eureka
     ports:
       - "8888:8888"
     expose:
       - 8888
+    depends_on:
+      - service-discovery
     networks:
       - supportflow
 
-  service-discovery:
-    image: ace0777/supportflow-service-discovery
-    container_name: 'service-discovery'
-    environment:
-      - CONFIG_SERVER_URI=config-server:8888
-      - PORT=8761
-    ports:
-      - "8761:8761"
-    expose:
-      - 8761
-    networks:
-      - supportflow
-    depends_on:
-      - config-server
-    links:
-      - config-server
+
 
 networks:
   supportflow:
