@@ -44,7 +44,7 @@ services:
     environment:
       - CONFIG_SERVER_URI=https://github.com/Ace0777/support-flow-config
       - CONFIG_SERVER_USERNAME=ace0777
-      - CONFIG_SERVER_PASSWORD=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
+      - CONFIG_SERVER_PASSWORD=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
       - PORT=8888
       - EUREKA_SERVER_URI=http://service-discovery:8761/eureka
     ports:
