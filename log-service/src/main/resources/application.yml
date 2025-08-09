@@ -1,6 +1,9 @@
 spring:
   application:
     name: 'log-service'
+  cloud:
+    config:
+      uri: 'config-server'
   datasource:
     url: jdbc:mysql://localhost:3306/supportflowlogs?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
