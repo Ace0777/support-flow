@@ -6,6 +6,7 @@ import models.requests.CreateUserRequest;
 import models.requests.UpdateUserRequest;
 import models.responses.UserResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public interface UserController {
     @PostMapping
     ResponseEntity<Void> save(@RequestBody final CreateUserRequest createUserRequest);
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping
     ResponseEntity<List<UserResponse>> findAll();
 
