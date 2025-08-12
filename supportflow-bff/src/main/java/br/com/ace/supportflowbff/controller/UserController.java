@@ -1,15 +1,18 @@
 package br.com.ace.supportflowbff.controller;
 
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import models.requests.CreateUserRequest;
 import models.requests.UpdateUserRequest;
 import models.responses.UserResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 
 @RequestMapping("/api/users")
+@Tag(name = "UserController", description = "User management operations")
 public interface UserController {
 
     @GetMapping("/{id}")

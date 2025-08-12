@@ -2,6 +2,7 @@ package br.com.ace.supportflowbff.controller;
 
 
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import models.requests.CreateTicketRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequestMapping("/api/tickets")
+@Tag(name = "TicketController", description = "Ticket management operations")
 public interface TicketController {
 
     @PostMapping

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RequestMapping("/api/auth")
-@Tag(name = "AuthController")
+@Tag(name = "AuthController", description = "Authentication and authorization operations")
 public interface AuthController {
 
     @Operation(summary = "Authenticate user")
