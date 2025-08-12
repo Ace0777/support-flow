@@ -1,19 +1,9 @@
 spring:
   application:
     name: 'email-service'
-  cloud:
-    config:
-      uri: 'config-server'
+    cloud:
+      config:
+        uri: ${CONFIG_SERVER_URI}
+  profiles:
+    active: ${PROFILE_ACTIVE}
 
-
-mail:
-  host: ${MAIL_HOST:smtp.gmail.com}
-  port: ${MAIL_PORT:587}
-  username: ${MAIL_USERNAME:luishhasantos@gmail.com}
-  password: ${MAIL_PASSWORD:eodr qwxw svut lrtr}
-  protocol: ${MAIL_PROTOCOL:smtp}
-
-server:
-  port: 0
-
-  

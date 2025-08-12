@@ -1,14 +1,9 @@
 package br.com.ace.supportflowbff.client;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import models.requests.CreateTicketRequest;
-import models.requests.CreateUserRequest;
 import models.requests.UpdateTicketRequest;
-import models.requests.UpdateUserRequest;
 import models.responses.TicketResponse;
-import models.responses.UserResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @FeignClient(
-        name = "ticket-service-api",
+        name = "localhost:8765/ticket-service-api", //todo: Change to the actual service name in production
         path = "/api/tickets"
 )
 public interface TicketFeingClient {

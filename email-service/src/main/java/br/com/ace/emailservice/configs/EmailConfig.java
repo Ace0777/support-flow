@@ -10,6 +10,7 @@ import java.util.Properties;
 @Configuration
 public class EmailConfig {
 
+
     @Value("${mail.host}")
     private String host;
 

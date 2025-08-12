@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -5,6 +7,11 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 20s
+      retries: 3
     volumes:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
@@ -21,47 +28,161 @@ services:
     expose:
       - 8761
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://service-discovery:8761/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
       - supportflow
 
-#  api-gateway:
-#    image: ace0777/supportflow-api-gateway
-#    container_name: 'api-gateway'
+  config-server:
+    container_name: 'config-server'
+    build:
+      context: ./config-server
+      dockerfile: Dockerfile
+    environment:
+      - CONFIG_SERVER_URI=${CONFIG_SERVER_URI}
+      - CONFIG_SERVER_USERNAME=${CONFIG_SERVER_USERNAME}
+      - CONFIG_SERVER_PASSWORD=${CONFIG_SERVER_PASSWORD}
+      - EUREKA_SERVER_URI=http://service-discovery:8761/eureka
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://config-server:8888/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      service-discovery:
+        condition: service_healthy
+    networks:
+      - supportflow
+
+  api-gateway:
+    container_name: 'api-gateway'
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    environment:
+      - EUREKA_SERVER_URI=http://service-discovery:8761/eureka
+      - CONFIG_SERVER_URI=http://config-server:8888
+      - PROFILE_ACTIVE=dev
+    ports:
+      - "8765:8765"
+    expose:
+      - 8765
+    depends_on:
+      service-discovery:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+    networks:
+      - supportflow
+
+  auth-service-api:
+    container_name: 'auth-service-api'
+    build:
+      context: ./auth-service-api
+      dockerfile: Dockerfile
+    environment:
+      - PROFILE_ACTIVE=dev
+      - EUREKA_SERVER_URI=http://service-discovery:8761/eureka
+      - CONFIG_SERVER_URI=http://config-server:8888
+    depends_on:
+      config-server:
+        condition: service_healthy
+      service-discovery:
+        condition: service_healthy
+    networks:
+      - supportflow
+
+  email-service:
+    container_name: 'email-service'
+    build:
+      context: ./email-service
+      dockerfile: Dockerfile
+    environment:
+      - PROFILE_ACTIVE=dev
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_ADDRESSES=rabbitmq
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - EUREKA_SERVER_URI=http://service-discovery:8761/eureka
+      - CONFIG_SERVER_URI=http://config-server:8888
+    depends_on:
+      config-server:
+        condition: service_healthy
+      service-discovery:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+        - supportflow
+
+  user-service-api:
+    container_name: 'user-service-api'
+    build:
+      context: ./user-service-api
+      dockerfile: Dockerfile
+    environment:
+      - PROFILE_ACTIVE=dev
+      - EUREKA_SERVER_URI=http://service-discovery:8761/eureka
+      - CONFIG_SERVER_URI=http://config-server:8888
+    depends_on:
+      config-server:
+        condition: service_healthy
+      service-discovery:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - supportflow
+      
+  ticket-service-api:
+    container_name: 'ticket-service-api'
+    build:
+      context: ./ticket-service-api
+      dockerfile: Dockerfile
+    environment:
+      - PROFILE_ACTIVE=dev
+      - EUREKA_SERVER_URI=http://service-discovery:8761/eureka
+      - CONFIG_SERVER_URI=http://config-server:8888
+      - DATABASE_HOST
+      - DATABASE_USERNAME
+      - DATABASE_PASSWORD
+      - RABBITMQ_HOST
+      - RABBITMQ_USERNAME
+      - RABBITMQ_PASSWORD
+    depends_on:
+      config-server:
+        condition: service_healthy
+      service-discovery:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - supportflow
+  
+#  log-service:
+#    container_name: 'log-service'
+#    build:
+#      context: ./log-service
+#      dockerfile: Dockerfile
 #    environment:
+#      - PROFILE_ACTIVE=dev
 #      - EUREKA_SERVER_URI=http://service-discovery:8761/eureka
-#      - PORT=8765
-#    ports:
-#      - "8765:8765"
-#    expose:
-#      - 8765
+#      - CONFIG_SERVER_URI=http://config-server:8888
+#      - MYSQL_HOST
+#      - MYSQL_DB
+#      - MYSQL_USER
+#      - MYSQL_PASSWORD
+#      - RABBITMQ_HOST=rabbitmq
 #    depends_on:
-#      - service-discovery
+#      config-server:
+#        condition: service_healthy
+#      service-discovery:
+#        condition: service_healthy
 #    networks:
 #      - supportflow
-#
-#  config-server:
-#    image: ace0777/supportflow-config-server
-#    container_name: 'config-server'
-#    environment:
-#      - CONFIG_SERVER_URI=https://github.com/Ace0777/support-flow-config
-#      - CONFIG_SERVER_USERNAME=ace0777
-#      - CONFIG_SERVER_PASSWORD=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
-#      - PORT=8888
-#      - EUREKA_SERVER_URI=http://service-discovery:8761/eureka
-#    ports:
-#      - "8888:8888"
-#    expose:
-#      - 8888
-#    depends_on:
-#      - service-discovery
-#    networks:
-#      - supportflow
-
-
+  
 
 networks:
   supportflow:
